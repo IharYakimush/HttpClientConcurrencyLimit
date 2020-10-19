@@ -17,7 +17,10 @@ namespace HttpClientConcurrencyLimit
 
         public override Task EndRequest()
         {
-            semaphore.Release();
+            if (this.RequestAllowed)
+            {
+                semaphore.Release();
+            }
 
             return Task.CompletedTask;                 
         }

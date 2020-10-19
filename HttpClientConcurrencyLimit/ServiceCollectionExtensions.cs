@@ -24,17 +24,27 @@ namespace HttpClientConcurrencyLimit
             return httpClientBuilder.AddHttpMessageHandler(() => new ConcurrencyLimitHandler(options, provider));
         }
 
-        public static IHttpClientBuilder AddConcurrencyLimitationSemaphoreSlim(this IHttpClientBuilder httpClientBuilder, Action<ConcurrencyLimitOptions> optionsSetup = null)
+        public static IHttpClientBuilder AddConcurrencyLimitation(this IHttpClientBuilder httpClientBuilder, Func<IServiceProvider,IConcurrencyProvider> provider, Action<ConcurrencyLimitOptions> optionsSetup = null)
         {
-            if (httpClientBuilder == null)
+            if (httpClientBuilder is null)
             {
                 throw new ArgumentNullException(nameof(httpClientBuilder));
+            }
+
+            if (provider is null)
+            {
+                throw new ArgumentNullException(nameof(provider));
             }
 
             ConcurrencyLimitOptions options = new ConcurrencyLimitOptions();
             optionsSetup?.Invoke(options);
 
-            return httpClientBuilder.AddHttpMessageHandler(() => new ConcurrencyLimitHandler(options, new ConcurrencyProviderSemaphoreSlim()));
+            return httpClientBuilder.AddHttpMessageHandler((sp) => new ConcurrencyLimitHandler(options, provider(sp)));
+        }
+
+        public static IHttpClientBuilder AddConcurrencyLimitationSemaphoreSlim(this IHttpClientBuilder httpClientBuilder, Action<ConcurrencyLimitOptions> optionsSetup = null)
+        {
+            return AddConcurrencyLimitation(httpClientBuilder, new ConcurrencyProviderSemaphoreSlim(), optionsSetup);
         }
     }
 }

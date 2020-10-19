@@ -14,6 +14,8 @@ namespace HttpClientConcurrencyLimit
 
     public class ConcurrencyResult
     {
+        public static ConcurrencyResult RequestNotAllowed { get; } = new ConcurrencyResult(false);
+
         public bool RequestAllowed { get; }
 
         public ConcurrencyResult(bool requestAllowed)

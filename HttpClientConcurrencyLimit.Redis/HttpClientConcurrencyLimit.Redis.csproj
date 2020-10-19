@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Description>Limit number of simultaneous http requests for specific HttpClient. Suppport limit configuration based on request properties. For in-proc limitation use semaphore. For distributed systems use Redis.</Description>
+    <PackageId>HttpClient.ConcurrencyLimit.Redis</PackageId>
+    <Company>IharYakimush</Company>
+    <Authors>IharYakimush</Authors>
+    <PackageProjectUrl>https://github.com/IharYakimush/HttpClientConcurrencyLimit</PackageProjectUrl>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <Product>HttpClient.ConcurrencyLimit.Redis</Product>
+    <PackageTags>httpclient concurrency-limit redis</PackageTags>
+    <NeutralLanguage>en</NeutralLanguage>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="RedLock.net" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HttpClientConcurrencyLimit\HttpClientConcurrencyLimit.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>

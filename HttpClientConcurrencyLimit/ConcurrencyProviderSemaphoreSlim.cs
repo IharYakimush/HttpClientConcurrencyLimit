@@ -10,10 +10,10 @@ namespace HttpClientConcurrencyLimit
 {
     public class ConcurrencyProviderSemaphoreSlim : IConcurrencyProvider
     {
-        private static readonly ConcurrentDictionary<LimitDetails, SemaphoreSlim> Semaphores = new ConcurrentDictionary<LimitDetails, SemaphoreSlim>();
+        private static readonly ConcurrentDictionary<ulong, SemaphoreSlim> Semaphores = new ConcurrentDictionary<ulong, SemaphoreSlim>();
         public async Task<ConcurrencyResult> BeginRequest(HttpRequestMessage request, LimitDetails limit, CancellationToken cancellationToken)
-        {
-            SemaphoreSlim semaphore = Semaphores.GetOrAdd(limit, (l) => new SemaphoreSlim(l.MaxConcurrentRequets));
+        {            
+            SemaphoreSlim semaphore = Semaphores.GetOrAdd(limit.InProcId, (l) => new SemaphoreSlim(limit.MaxConcurrentRequets));
 
             TimeSpan timeout = limit.LimitExceededThrowImmidiately ? TimeSpan.Zero : limit.LimitExceededWaitTimeout;
 
